@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
     final GlobalKey _scaffoldKey = GlobalKey();
 
     final ProfileController _profileController =
-        ProfileController(context: context);
+    ProfileController(context: context);
 
     /// mediaQuery
     final _size = MediaQueryData.fromWindow(WidgetsBinding.instance!.window);
@@ -60,28 +60,26 @@ class ProfilePage extends StatelessWidget {
                                             blurRadius: 5,
                                             offset: const Offset(0, 1))
                                       ]),
-                                  child:
-                                      _profileController.getUserData().image !=
-                                              null
-                                          ? ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(360),
-                                              child: FadeInImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                    _profileController
-                                                        .getUserData()
-                                                        .image
-                                                        .toString()),
-                                                placeholder: const AssetImage(
-                                                    'assets/images/user_placeholder.png'),
-                                              ),
-                                            )
-                                          : const Image(
-                                              fit: BoxFit.cover,
-                                              image: AssetImage(
-                                                  'assets/images/user_placeholder.png'),
-                                            ),
+                                  child: ClipRRect(
+                                    borderRadius:
+                                    BorderRadius.circular(360),
+                                    child: _profileController.getUserData().image !=
+                                        null
+                                        ?  FadeInImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                          _profileController
+                                              .getUserData()
+                                              .image
+                                              .toString()),
+                                      placeholder: const AssetImage(
+                                          'assets/images/user_placeholder.png'),
+                                    ) : const Image(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(
+                                          'assets/images/user_placeholder.png'),
+                                    ),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10),
@@ -95,9 +93,9 @@ class ProfilePage extends StatelessWidget {
                                           shape: BoxShape.circle),
                                       child: AnimatedOnTapButton(
                                         onTap: () async =>
-                                            await _profileController
-                                                .updatePhoto(
-                                                    scaffoldKey: _scaffoldKey),
+                                        await _profileController
+                                            .updatePhoto(
+                                            scaffoldKey: _scaffoldKey),
                                         child: Padding(
                                           padding: const EdgeInsets.all(2),
                                           child: Container(
@@ -107,7 +105,7 @@ class ProfilePage extends StatelessWidget {
                                             child: Icon(
                                               Icons.image_outlined,
                                               color:
-                                                  HexColor.fromHex('#EFEEEE'),
+                                              HexColor.fromHex('#EFEEEE'),
                                             ),
                                           ),
                                         ),
@@ -125,7 +123,7 @@ class ProfilePage extends StatelessWidget {
                             icon: Icons.person,
                             title: 'Username',
                             subTitle:
-                                '${_profileController.getUserData().name} '
+                            '${_profileController.getUserData().name} '
                                 '${_profileController.getUserData().lastname}',
                           ),
                           _card(
@@ -195,8 +193,8 @@ class ProfilePage extends StatelessWidget {
 
   Widget _card(
       {required String title,
-      required String subTitle,
-      required IconData icon}) {
+        required String subTitle,
+        required IconData icon}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: ListTile(
