@@ -2,29 +2,26 @@
 
 import 'package:chat_app/src/core/extensions/hex_color.dart';
 import 'package:chat_app/src/presentation/pages/profile_page/profile_controller.dart';
-import 'package:chat_app/src/presentation/pages/profile_page/update_profile_page/update_profile_controller.dart';
+import 'package:chat_app/src/presentation/providers/user_provider.dart';
+import 'package:chat_app/src/presentation/widgets/alert_sheets/snackbar.dart';
 import 'package:chat_app/src/presentation/widgets/animations/animated_onTap_button.dart';
 import 'package:chat_app/src/presentation/widgets/auth_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class UpdateProfilePage extends StatelessWidget {
-  const UpdateProfilePage({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    final UpdateProfileController _updateProfileController =
-        UpdateProfileController();
-    _updateProfileController.nameController.text =
-        _updateProfileController.user.name!;
-    _updateProfileController.lastnameController.text =
-        _updateProfileController.user.lastname!;
-    _updateProfileController.emailController.text =
-        _updateProfileController.user.email!;
-    _updateProfileController.phoneController.text =
-        _updateProfileController.user.phone!;
+class UpdateProfilePage {
+
+  updatePhoto({required BuildContext context, required GlobalKey scaffoldKey, required UserProvider userProvider}){
+    final ProfileController _profileController = ProfileController(context: context);
+    _profileController.nameController.text =
+    _profileController.user.name!;
+    _profileController.lastnameController.text =
+    _profileController.user.lastname!;
+    _profileController.emailController.text =
+    _profileController.user.email!;
+    _profileController.phoneController.text =
+    _profileController.user.phone!;
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -48,13 +45,13 @@ class UpdateProfilePage extends StatelessWidget {
                   textInputType: TextInputType.text,
                   textInputAction: TextInputAction.next,
                   textEditingController:
-                      _updateProfileController.nameController,
-                  textFocusNode: _updateProfileController.nameNode,
+                  _profileController.nameController,
+                  textFocusNode: _profileController.nameNode,
                   onFieldSubmitted: () =>
-                      _updateProfileController.fieldFocusChange(
+                      _profileController.fieldFocusChange(
                           context,
-                          _updateProfileController.nameNode,
-                          _updateProfileController.lastnameNode),
+                          _profileController.nameNode,
+                          _profileController.lastnameNode),
                 ),
                 const SizedBox(
                   height: 10,
@@ -66,13 +63,13 @@ class UpdateProfilePage extends StatelessWidget {
                   textInputType: TextInputType.text,
                   textInputAction: TextInputAction.next,
                   textEditingController:
-                      _updateProfileController.lastnameController,
-                  textFocusNode: _updateProfileController.lastnameNode,
+                  _profileController.lastnameController,
+                  textFocusNode: _profileController.lastnameNode,
                   onFieldSubmitted: () =>
-                      _updateProfileController.fieldFocusChange(
+                      _profileController.fieldFocusChange(
                           context,
-                          _updateProfileController.lastnameNode,
-                          _updateProfileController.emailNode),
+                          _profileController.lastnameNode,
+                          _profileController.emailNode),
                 ),
                 const SizedBox(
                   height: 10,
@@ -87,13 +84,13 @@ class UpdateProfilePage extends StatelessWidget {
                   textInputType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   textEditingController:
-                      _updateProfileController.emailController,
-                  textFocusNode: _updateProfileController.emailNode,
+                  _profileController.emailController,
+                  textFocusNode: _profileController.emailNode,
                   onFieldSubmitted: () =>
-                      _updateProfileController.fieldFocusChange(
+                      _profileController.fieldFocusChange(
                           context,
-                          _updateProfileController.emailNode,
-                          _updateProfileController.phoneNode),
+                          _profileController.emailNode,
+                          _profileController.phoneNode),
                 ),
                 const SizedBox(
                   height: 10,
@@ -108,10 +105,10 @@ class UpdateProfilePage extends StatelessWidget {
                       FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s")),
                     ],
                     textEditingController:
-                        _updateProfileController.phoneController,
-                    textFocusNode: _updateProfileController.phoneNode,
+                    _profileController.phoneController,
+                    textFocusNode: _profileController.phoneNode,
                     onFieldSubmitted: () {
-                      _updateProfileController.phoneNode.unfocus();
+                      _profileController.phoneNode.unfocus();
                     }),
                 const SizedBox(
                   height: 20,
@@ -121,7 +118,7 @@ class UpdateProfilePage extends StatelessWidget {
                   children: [
                     AnimatedOnTapButton(
                       onTap: () async =>
-                          _updateProfileController.updateData(context: context),
+                          await _profileController.updateData(context: context, scaffoldKey: scaffoldKey, userProvider: userProvider),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 40, vertical: 15),

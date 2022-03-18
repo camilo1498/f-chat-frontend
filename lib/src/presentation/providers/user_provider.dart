@@ -77,7 +77,6 @@ class UserProvider extends ChangeNotifier {
         if (apiResponse.success == true) {
           User userRes = User.fromJson(apiResponse.data);
           GetStorage().write('user', userRes.toJson());
-          notifyListeners();
           _user = userRes;
           return apiResponse;
         } else {
@@ -85,10 +84,8 @@ class UserProvider extends ChangeNotifier {
         }
       }
     } on DioError catch (err) {
-      return ApiResponse(
-        success: false,
-        message: err.message,
-      );
+      ApiResponse apiResponse = ApiResponse.fromJson(err.response!.data);
+      return apiResponse;
     } finally {
       _loading = false;
       notifyListeners();

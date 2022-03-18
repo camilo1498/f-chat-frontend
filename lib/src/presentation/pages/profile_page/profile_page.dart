@@ -176,7 +176,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                onPressed: _profileController.openUpdateScreen,
+                onPressed: () => _profileController.openUpdateScreen(_scaffoldKey, userProvider),
                 backgroundColor: Colors.red,
                 child: Icon(
                   Icons.edit,
