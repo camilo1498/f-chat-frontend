@@ -23,9 +23,6 @@ class UserProvider extends ChangeNotifier {
   /// Dio instance
   final Dio dio = Dio();
 
-  /// storage
-  final GetStorage _storage = GetStorage();
-
   /// getter
   bool get loading => _loading;
   User get user => _user;

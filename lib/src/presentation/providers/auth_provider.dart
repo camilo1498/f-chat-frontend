@@ -56,19 +56,23 @@ class AuthProvider extends ChangeNotifier {
       {required String email, required String password}) async {
     try {
       _loading = true;
+      notifyListeners();
       Response _res = await dio.post('$url/login',
           data: {'email': email, 'password': password},
           options: Options(headers: {'Content-Type': 'application/json'}));
       if (_res.statusCode == 201) {
-        _loading = false;
         User _user = User.fromJson(_res.data['data']);
         _storage.write('user', _user.toJson());
         _getUser();
         ApiResponse apiResponse = ApiResponse.fromJson(_res.data);
         return apiResponse;
+      } else {
+        return  ApiResponse(
+          message: 'Login error',
+          success: false
+        );
       }
     } on DioError catch (err) {
-      _loading = false;
       _status = AuthStatus.unauthenticated;
       ApiResponse apiResponse = ApiResponse.fromJson(err.response!.data);
       return apiResponse;
@@ -76,13 +80,13 @@ class AuthProvider extends ChangeNotifier {
       _loading = false;
       notifyListeners();
     }
-    _loading = false;
-    return ApiResponse(success: false, message: 'error while login.');
   }
 
+  /// register user
   Future<ApiResponse> register({required User user}) async {
     try {
       _loading = true;
+      notifyListeners();
       Response _res = await dio.post('$url/single-create',
           data: user.toJson(),
           options: Options(headers: {'Content-Type': 'application/json'}));
@@ -90,9 +94,13 @@ class AuthProvider extends ChangeNotifier {
       if (_res.statusCode == 201) {
         var _login = await login(email: user.email!, password: user.password!);
         return _login;
+      } else {
+        return ApiResponse(
+            message: 'Register error',
+            success: false
+        );
       }
     } on DioError catch (err) {
-      _loading = false;
       _status = AuthStatus.unauthenticated;
       ApiResponse apiResponse = ApiResponse.fromJson(err.response!.data);
       return apiResponse;
@@ -100,8 +108,6 @@ class AuthProvider extends ChangeNotifier {
       _loading = false;
       notifyListeners();
     }
-    _loading = false;
-    return ApiResponse(success: false, message: 'error while login.');
   }
 
   /// delete session
