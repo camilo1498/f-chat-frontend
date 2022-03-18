@@ -18,47 +18,46 @@ import 'package:provider/provider.dart';
 class ProfileController {
   /// context
   final BuildContext context;
-  ProfileController({
-    required this.context
-  });
+  ProfileController({required this.context});
 
   /// load user data from storage
   User user = User.fromJson(GetStorage().read('user') ?? {});
 
   /// update user controller
-  final UpdateProfileController _updateProfileController = UpdateProfileController();
+  final UpdateProfileController _updateProfileController =
+      UpdateProfileController();
 
-  User getUserData(){
+  User getUserData() {
     return Provider.of<UserProvider>(context).user;
   }
 
-
-  Future logOut() async{
+  Future logOut() async {
     await Provider.of<AuthProvider>(context, listen: false).logOut();
     Provider.of<HomePageProvider>(context, listen: false).tapIndex = 0;
   }
 
-  openUpdateScreen(){
+  openUpdateScreen() {
     showDialog(
         context: context,
         barrierDismissible: true,
-        builder: (context){
+        builder: (context) {
           return const UpdateProfilePage();
-        }
-    );
+        });
   }
 
-
-
-  updateUserData({required User u}) async{
-    await Provider.of<UserProvider>(context, listen: false).updateUserInfo(user: u).then((res) {
+  updateUserData({required User u}) async {
+    await Provider.of<UserProvider>(context, listen: false)
+        .updateUserInfo(user: u)
+        .then((res) {
       Navigator.pop(context);
-      showAlertDialog(context: context,title: res.success == true ? 'Success' : 'Error', message: res.message);
+      showAlertDialog(
+          context: context,
+          title: res.success == true ? 'Success' : 'Error',
+          message: res.message);
     });
-
   }
 
-  updatePhoto({required GlobalKey scaffoldKey})async{
+  updatePhoto({required GlobalKey scaffoldKey}) async {
     User _update = User(
         id: user.id,
         name: user.name,
@@ -66,20 +65,22 @@ class ProfileController {
         phone: user.phone,
         email: user.email,
         sessionToken: user.sessionToken,
-        image: user.image
-    );
+        image: user.image);
     showDialog(
         context: context,
-        builder: (_){
+        builder: (_) {
           return GalleryMediaPicker(
-            pathList: (path) async{
-              if(path.isNotEmpty){
+            pathList: (path) async {
+              if (path.isNotEmpty) {
                 String _image = await path[0]['path'];
                 Navigator.pop(context);
                 await Provider.of<UserProvider>(context, listen: false)
                     .updateUserInfo(user: _update, image: File(_image))
-                        .then((res) {
-                  showAlertDialog(context: context,title: res.success == true ? 'Success' : 'Error', message: res.message);
+                    .then((res) {
+                  showAlertDialog(
+                      context: context,
+                      title: res.success == true ? 'Success' : 'Error',
+                      message: res.message);
                 });
               }
             },
@@ -87,9 +88,6 @@ class ProfileController {
             singlePick: true,
             onlyImages: true,
           );
-        }
-    );
-
+        });
   }
-
 }

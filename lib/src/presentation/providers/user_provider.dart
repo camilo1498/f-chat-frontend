@@ -31,19 +31,20 @@ class UserProvider extends ChangeNotifier {
   User get user => _user;
   ApiResponse get apiResponse => _apiResponse;
 
-  set apiResponse(ApiResponse res){
+  set apiResponse(ApiResponse res) {
     _apiResponse = res;
     notifyListeners();
   }
 
-  Future<ApiResponse> updateUserInfo({required User user, File? image}) async{
-    try{
+  Future<ApiResponse> updateUserInfo({required User user, File? image}) async {
+    try {
       _loading = true;
       notifyListeners();
-      if(image != null){
+      if (image != null) {
         /// update with image
         FormData form = FormData.fromMap({
-          'image': await MultipartFile.fromFile(image.path,filename: user.email),
+          'image':
+              await MultipartFile.fromFile(image.path, filename: user.email),
           'user': json.encode(user)
         });
         Response _res = await dio.put(
@@ -55,17 +56,16 @@ class UserProvider extends ChangeNotifier {
           }),
         );
         apiResponse = ApiResponse.fromJson(_res.data);
-        if(apiResponse.success == true){
+        if (apiResponse.success == true) {
           User userRes = User.fromJson(apiResponse.data);
           GetStorage().write('user', userRes.toJson());
           notifyListeners();
           _user = userRes;
           return apiResponse;
-
-        } else{
+        } else {
           return apiResponse;
         }
-      } else{
+      } else {
         /// update without image
         Response _res = await dio.put(
           '$url/update',
@@ -77,25 +77,24 @@ class UserProvider extends ChangeNotifier {
         );
 
         apiResponse = ApiResponse.fromJson(_res.data);
-        if(apiResponse.success == true){
+        if (apiResponse.success == true) {
           User userRes = User.fromJson(apiResponse.data);
           GetStorage().write('user', userRes.toJson());
           notifyListeners();
           _user = userRes;
           return apiResponse;
-        } else{
+        } else {
           return apiResponse;
         }
       }
-    } on DioError catch(err){
+    } on DioError catch (err) {
       return ApiResponse(
         success: false,
         message: err.message,
       );
-    } finally{
+    } finally {
       _loading = false;
       notifyListeners();
     }
   }
-
 }

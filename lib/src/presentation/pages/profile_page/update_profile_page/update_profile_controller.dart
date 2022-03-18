@@ -10,12 +10,11 @@ class UpdateProfileController {
   /// load user data from storage
   User user = User.fromJson(GetStorage().read('user') ?? {});
 
-
   /// controllers
-   TextEditingController emailController = TextEditingController();
-   TextEditingController nameController = TextEditingController();
-   TextEditingController lastnameController = TextEditingController();
-   TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   /// focus node
   final FocusNode emailNode = FocusNode();
@@ -30,15 +29,13 @@ class UpdateProfileController {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-
-  updateData({required BuildContext context}) async{
+  updateData({required BuildContext context}) async {
     if (!isEmail(emailController.text.trim()) ||
         !isText(nameController.text.trim()) ||
         !isText(lastnameController.text.trim()) ||
         !isPhone(phoneController.text.trim())) {
-
       print('fill all fields');
-    } else{
+    } else {
       User _update = User(
           id: user.id,
           name: nameController.text.trim(),
@@ -46,11 +43,8 @@ class UpdateProfileController {
           phone: phoneController.text.trim(),
           email: emailController.text.trim(),
           sessionToken: user.sessionToken,
-          image: user.image
-      );
+          image: user.image);
       await ProfileController(context: context).updateUserData(u: _update);
     }
   }
-
-
 }

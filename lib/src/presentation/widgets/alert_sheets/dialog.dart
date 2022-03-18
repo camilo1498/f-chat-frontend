@@ -97,10 +97,11 @@ Future<bool> errorDialog(
       false;
 }
 
-showAlertDialog({required BuildContext context ,String? title, String? message}){
+showAlertDialog(
+    {required BuildContext context, String? title, String? message}) {
   showDialog(
       context: context,
-      builder: (context){
+      builder: (context) {
         return AlertDialog(
           backgroundColor: HexColor.fromHex('#1C2938'),
           title: Text(
@@ -108,22 +109,21 @@ showAlertDialog({required BuildContext context ,String? title, String? message})
             style: TextStyle(
                 color: HexColor.fromHex('#EFEEEE'),
                 fontSize: 22,
-                fontWeight: FontWeight.bold
-            ),
+                fontWeight: FontWeight.bold),
           ),
           content: Text(
             message!,
             style: TextStyle(
                 color: HexColor.fromHex('#EFEEEE').withOpacity(0.5),
                 fontSize: 15,
-                fontWeight: FontWeight.bold
-            ),
+                fontWeight: FontWeight.bold),
           ),
           actions: [
             AnimatedOnTapButton(
               onTap: () async => Navigator.pop(context),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
                     color: Colors.red,
                     borderRadius: BorderRadius.circular(10),
@@ -131,21 +131,17 @@ showAlertDialog({required BuildContext context ,String? title, String? message})
                       BoxShadow(
                           color: HexColor.fromHex('#1C2938'),
                           blurRadius: 5,
-                          offset: const Offset(0,1)
-                      )
-                    ]
-                ),
+                          offset: const Offset(0, 1))
+                    ]),
                 child: Text(
                   'Ok',
                   style: TextStyle(
                       color: HexColor.fromHex('#EFEEEE'),
-                      fontWeight: FontWeight.bold
-                  ),
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),
           ],
         );
       });
-
 }

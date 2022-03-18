@@ -1,4 +1,4 @@
-package dev.camilo.chat_app.chat_app
+package dev.camilo.chatapp.chat_app
 
 import io.flutter.embedding.android.FlutterActivity
 

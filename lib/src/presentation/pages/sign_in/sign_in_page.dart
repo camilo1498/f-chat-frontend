@@ -31,6 +31,7 @@ class _SignInPageState extends State<SignInPage> {
   void dispose() {
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(

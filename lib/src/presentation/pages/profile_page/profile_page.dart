@@ -17,11 +17,13 @@ class ProfilePage extends StatelessWidget {
     /// form key
     final GlobalKey _scaffoldKey = GlobalKey();
 
-    final ProfileController _profileController = ProfileController(context: context);
+    final ProfileController _profileController =
+        ProfileController(context: context);
+
     /// mediaQuery
     final _size = MediaQueryData.fromWindow(WidgetsBinding.instance!.window);
     return Consumer<UserProvider>(
-      builder: (_, userProvider, __){
+      builder: (_, userProvider, __) {
         return Stack(
           children: [
             Scaffold(
@@ -39,7 +41,9 @@ class ProfilePage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 10,),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           SizedBox(
                             width: 200,
                             height: 200,
@@ -54,18 +58,30 @@ class ProfilePage extends StatelessWidget {
                                         BoxShadow(
                                             color: HexColor.fromHex('#1C2938'),
                                             blurRadius: 5,
-                                            offset: const Offset(0,1)
-                                        )
-                                      ]
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(360),
-                                    child: FadeInImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(_profileController.getUserData().image.toString()),
-                                      placeholder: const AssetImage('assets/images/user_placeholder.png'),
-                                    ),
-                                  ),
+                                            offset: const Offset(0, 1))
+                                      ]),
+                                  child:
+                                      _profileController.getUserData().image !=
+                                              null
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(360),
+                                              child: FadeInImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                    _profileController
+                                                        .getUserData()
+                                                        .image
+                                                        .toString()),
+                                                placeholder: const AssetImage(
+                                                    'assets/images/user_placeholder.png'),
+                                              ),
+                                            )
+                                          : const Image(
+                                              fit: BoxFit.cover,
+                                              image: AssetImage(
+                                                  'assets/images/user_placeholder.png'),
+                                            ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10),
@@ -76,20 +92,22 @@ class ProfilePage extends StatelessWidget {
                                       height: 45,
                                       decoration: BoxDecoration(
                                           color: HexColor.fromHex('#EFEEEE'),
-                                          shape: BoxShape.circle
-                                      ),
+                                          shape: BoxShape.circle),
                                       child: AnimatedOnTapButton(
-                                        onTap: () async => await _profileController.updatePhoto(scaffoldKey: _scaffoldKey),
+                                        onTap: () async =>
+                                            await _profileController
+                                                .updatePhoto(
+                                                    scaffoldKey: _scaffoldKey),
                                         child: Padding(
                                           padding: const EdgeInsets.all(2),
                                           child: Container(
                                             decoration: const BoxDecoration(
                                                 color: Colors.red,
-                                                shape: BoxShape.circle
-                                            ),
+                                                shape: BoxShape.circle),
                                             child: Icon(
                                               Icons.image_outlined,
-                                              color: HexColor.fromHex('#EFEEEE'),
+                                              color:
+                                                  HexColor.fromHex('#EFEEEE'),
                                             ),
                                           ),
                                         ),
@@ -100,30 +118,41 @@ class ProfilePage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 50,),
+                          const SizedBox(
+                            height: 50,
+                          ),
                           _card(
                             icon: Icons.person,
                             title: 'Username',
                             subTitle:
-                            '${_profileController.getUserData().name} '
+                                '${_profileController.getUserData().name} '
                                 '${_profileController.getUserData().lastname}',
                           ),
                           _card(
                             icon: Icons.email,
                             title: 'Email',
-                            subTitle: _profileController.getUserData().email.toString(),
+                            subTitle: _profileController
+                                .getUserData()
+                                .email
+                                .toString(),
                           ),
                           _card(
                             icon: Icons.phone,
                             title: 'Phone number',
-                            subTitle: _profileController.getUserData().phone.toString(),
+                            subTitle: _profileController
+                                .getUserData()
+                                .phone
+                                .toString(),
                           ),
-                          const SizedBox(height: 40,),
+                          const SizedBox(
+                            height: 40,
+                          ),
                           const Spacer(),
                           AnimatedOnTapButton(
                             onTap: () async => _profileController.logOut(),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 15),
                               decoration: BoxDecoration(
                                   color: Colors.red,
                                   borderRadius: BorderRadius.circular(10),
@@ -131,16 +160,13 @@ class ProfilePage extends StatelessWidget {
                                     BoxShadow(
                                         color: HexColor.fromHex('#1C2938'),
                                         blurRadius: 5,
-                                        offset: const Offset(0,1)
-                                    )
-                                  ]
-                              ),
+                                        offset: const Offset(0, 1))
+                                  ]),
                               child: Text(
                                 'logout',
                                 style: TextStyle(
                                     color: HexColor.fromHex('#EFEEEE'),
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
@@ -160,15 +186,17 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            if(userProvider.loading)
-              const LoadingIndicator()
+            if (userProvider.loading) const LoadingIndicator()
           ],
         );
       },
     );
   }
 
-  Widget _card ({required String title, required String subTitle, required IconData icon}){
+  Widget _card(
+      {required String title,
+      required String subTitle,
+      required IconData icon}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: ListTile(
@@ -180,16 +208,12 @@ class ProfilePage extends StatelessWidget {
             title,
             style: TextStyle(
                 color: HexColor.fromHex('#1C2938'),
-                fontWeight: FontWeight.bold
-            ),
+                fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
             subTitle,
-            style: TextStyle(
-                color: HexColor.fromHex('#1C2938')
-            ),
-          )
-      ),
+            style: TextStyle(color: HexColor.fromHex('#1C2938')),
+          )),
     );
   }
 }
