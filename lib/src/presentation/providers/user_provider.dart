@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:chat_app/src/presentation/widgets/alert_sheets/snackbar.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:chat_app/src/data/models/api_response.dart';
@@ -33,6 +34,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// update user data
   Future<ApiResponse> updateUserInfo({required User user, File? image}) async {
     try {
       _loading = true;
@@ -84,11 +86,48 @@ class UserProvider extends ChangeNotifier {
         }
       }
     } on DioError catch (err) {
-      ApiResponse apiResponse = ApiResponse.fromJson(err.response!.data);
+      apiResponse = ApiResponse.fromJson(err.response!.data);
       return apiResponse;
     } finally {
       _loading = false;
       notifyListeners();
     }
   }
+
+  /// get all register users
+  Future<List<User>> getUsers() async{
+    try{
+      _loading = true;
+      notifyListeners();
+      /// send req to server
+      Response _res = await dio.get(
+          '$url/getAll/${_user.id}',
+          options: Options(
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': user.sessionToken!
+              }
+          )
+      );
+      //apiResponse = ApiResponse.fromJson(_res.data); => fix response structure in backend
+      if(_res.statusCode == 201){
+
+        /// create list<User>
+        List<User> _users = User.fromJsonList(_res.data);
+        return _users;
+      } else{
+        showToast(message: _res.data);
+        return [];
+      }
+
+    } on DioError catch (err){
+      apiResponse = ApiResponse.fromJson(err.response!.data);
+      return [];
+    } finally{
+      _loading = false;
+      notifyListeners();
+    }
+
+  }
+
 }

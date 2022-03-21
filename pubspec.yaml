@@ -27,6 +27,7 @@ dependencies:
   gallery_media_picker: ^0.0.7
 
   fluttertoast: ^8.0.9
+  dart_code_metrics: ^4.13.0
 
 dev_dependencies:
   flutter_test:

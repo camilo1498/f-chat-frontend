@@ -42,6 +42,15 @@ class User {
         isAvailable: json["is_available"],
         sessionToken: json["session_token"],
       );
+  
+  static List<User> fromJsonList(List<dynamic> jsonList){
+    List<User> toList = []; 
+    for (var item in jsonList) {
+      User user = User.fromJson(item);
+      toList.add(user);
+    }
+    return toList;
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -54,4 +63,6 @@ class User {
         "is_available": isAvailable,
         "session_token": sessionToken,
       };
+  
+  
 }

@@ -4,7 +4,6 @@ import 'package:chat_app/src/core/extensions/hex_color.dart';
 import 'package:chat_app/src/presentation/pages/profile_page/profile_controller.dart';
 import 'package:chat_app/src/presentation/providers/user_provider.dart';
 import 'package:chat_app/src/presentation/widgets/animations/animated_onTap_button.dart';
-import 'package:chat_app/src/presentation/widgets/animations/page_transition_animation.dart';
 import 'package:chat_app/src/presentation/widgets/loading_indicartor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,12 +23,12 @@ class ProfilePage extends StatelessWidget {
     final _size = MediaQueryData.fromWindow(WidgetsBinding.instance!.window);
     return Consumer<UserProvider>(
       builder: (_, userProvider, __) {
-        return Stack(
-          children: [
-            Scaffold(
-              key: _scaffoldKey,
-              backgroundColor: HexColor.fromHex('#EFEEEE'),
-              body: SingleChildScrollView(
+        return Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: HexColor.fromHex('#EFEEEE'),
+          body: Stack(
+            children: [
+              SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: SizedBox(
                   width: _size.size.width,
@@ -175,22 +174,24 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () => _profileController.openUpdateScreen(_scaffoldKey, userProvider),
-                backgroundColor: Colors.red,
-                child: Icon(
-                  Icons.edit,
-                  color: HexColor.fromHex('#EFEEEE'),
-                ),
-              ),
+              if (userProvider.loading)
+                const LoadingIndicator()
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => _profileController.openUpdateScreen(_scaffoldKey, userProvider),
+            backgroundColor: Colors.red,
+            child: Icon(
+              Icons.edit,
+              color: HexColor.fromHex('#EFEEEE'),
             ),
-            if (userProvider.loading) const LoadingIndicator()
-          ],
+          ),
         );
       },
     );
   }
 
+  /// list tile card
   Widget _card(
       {required String title,
         required String subTitle,

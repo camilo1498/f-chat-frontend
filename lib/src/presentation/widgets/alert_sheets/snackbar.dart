@@ -2,6 +2,7 @@ import 'package:chat_app/src/core/extensions/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+/// show message in a snackBar
 snackBar(
     {required scaffoldGlobalKey,
     required String message,
@@ -29,6 +30,7 @@ snackBar(
   return scaffoldGlobalKey.currentState.showSnackBar(_snackBar);
 }
 
+/// show message in a toast
 showToast({required message}){
   Fluttertoast.showToast(
       msg: message ?? 'Error',
