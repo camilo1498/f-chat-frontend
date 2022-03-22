@@ -2,7 +2,9 @@ import 'package:chat_app/src/data/models/user.dart';
 import 'package:chat_app/src/presentation/pages/home_page/home_page.dart';
 import 'package:chat_app/src/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:chat_app/src/presentation/providers/auth_provider.dart';
+import 'package:chat_app/src/presentation/providers/chat_provider.dart';
 import 'package:chat_app/src/presentation/providers/home_page_provider.dart';
+import 'package:chat_app/src/presentation/providers/message_provider.dart';
 import 'package:chat_app/src/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +37,9 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => AuthProvider()),
       ChangeNotifierProvider(create: (_) => HomePageProvider()),
-      ChangeNotifierProvider(create: (_) => UserProvider())
+      ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => ChatProvider()),
+      ChangeNotifierProvider(create: (_) => MessageProvider())
     ],
     child: const MyApp(),
   ));

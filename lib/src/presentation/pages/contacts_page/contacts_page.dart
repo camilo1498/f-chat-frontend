@@ -51,6 +51,7 @@ class ContactsPage extends StatelessWidget {
                                 itemBuilder: (_, index){
                                   return _card(
                                       context: context,
+                                      userChat: snapshot.data![index],
                                       name: '${snapshot.data?[index].name!} ${snapshot.data![index].lastname!}',
                                       photoUrl: snapshot.data?[index].image!.toString() ?? '',
                                       email: snapshot.data?[index].email! ?? ''
@@ -85,6 +86,7 @@ class ContactsPage extends StatelessWidget {
   Widget _card({
     required BuildContext context,
     required String name,
+    required User userChat,
     required String photoUrl,
     required String email}) {
     return AnimatedOnTapButton(
@@ -93,7 +95,7 @@ class ContactsPage extends StatelessWidget {
         Navigator.of(context).push(
             PageTransitionAnimation(
                 child:
-                const MessagePage(),
+                MessagePage(userChat: userChat),
                 direction:
                 AxisDirection
                     .left));
