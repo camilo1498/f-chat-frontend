@@ -1,6 +1,7 @@
 import 'package:chat_app/src/data/models/chat.dart';
 import 'package:chat_app/src/data/models/api_response.dart';
 import 'package:chat_app/src/data/repositories/env.dart';
+import 'package:chat_app/src/presentation/widgets/alert_sheets/snackbar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -21,10 +22,15 @@ class ChatProvider extends ChangeNotifier{
 
   bool get loading => _loading;
 
+  List<Chat> _chats = [];
+  List<Chat> get chats => _chats;
+  set chats(List<Chat> chat){
+    _chats = chat;
+    notifyListeners();
+  }
+
   Future<ApiResponse> create(Chat chat) async{
     try{
-      _loading = true;
-      notifyListeners();
       Response _res = await dio.post(
           '$url/create',
           data: chat.toJson(),
@@ -42,13 +48,33 @@ class ChatProvider extends ChangeNotifier{
       } else{
         return _apiResponse;
       }
-    } on DioError catch(err){
-      _apiResponse = ApiResponse.fromJson(err.response!.data);
-      return _apiResponse;
+    } on DioError catch(err){;
+      return ApiResponse(
+        success: false,
+        message: err.response!.data.toString()
+      );
     } finally{
-      _loading = false;
       notifyListeners();
     }
   }
 
+  Future<List<Chat>> getChats() async{
+    Response _res = await dio.get(
+      '$url/findByIdUser/${_user.id}',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': _user.sessionToken!
+        }
+      )
+    );
+
+    if(_res.statusCode == 201){
+      List<Chat> chats = Chat.fromJsonList(_res.data);
+      return chats;
+    } else{
+      showToast(message: _res.data);
+      return [];
+    }
+  }
 }

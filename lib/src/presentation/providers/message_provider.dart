@@ -21,6 +21,47 @@ class MessageProvider extends ChangeNotifier{
 
   bool get loading => _loading;
 
+
+
+  /// message list
+  List<Message> _message = [];
+  List<Message> get message => _message;
+  set message(List<Message> message){
+    _message = message;
+    notifyListeners();
+  }
+
+  /// message id
+  String _messageId = '';
+  String get messageId => _messageId;
+  set messageId(String id){
+    _messageId = id;
+    notifyListeners();
+  }
+
+  /// is user online
+  bool _isOnline = false;
+  bool get isOnline => _isOnline;
+  set isOnline(bool online){
+    _isOnline = online;
+    notifyListeners();
+  }
+
+  /// is user writing
+  bool _isWriting = false;
+  bool get isWriting => _isWriting;
+  set isWriting(bool writing){
+    _isWriting = writing;
+    notifyListeners();
+  }
+  /// chat id
+  String _chatId = '';
+  String get chatId => _chatId;
+  set chatId(String id){
+    _chatId = id;
+    notifyListeners();
+  }
+
   /// create message
   Future<ApiResponse> create(Message message) async{
     try{
@@ -54,13 +95,13 @@ class MessageProvider extends ChangeNotifier{
   }
 
   /// get messages
-  Future<List<Message>> getMessagesByChat({required String chatId}) async{
+  Future<List<Message>> getMessagesByChat() async{
     try{
       _loading = true;
       notifyListeners();
       /// send req to server
       Response _res = await dio.get(
-          '$url/findByChat/${_user.id}',
+          '$url/findByChat/$chatId',
           options: Options(
               headers: {
                 'Content-Type': 'application/json',
@@ -72,21 +113,87 @@ class MessageProvider extends ChangeNotifier{
       if(_res.statusCode == 201){
 
         /// create list<User>
-        List<User> _users = User.fromJsonList(_res.data);
-        return [];
+        List<Message> _message = Message.fromJsonList(_res.data);
+        return _message;
       } else{
         showToast(message: _res.data);
         return [];
       }
 
     } on DioError catch (err){
-      _apiResponse = ApiResponse.fromJson(err.response!.data);
+      debugPrint(err.response!.data);
       return [];
     } finally{
       _loading = false;
       notifyListeners();
     }
 
+  }
+
+  /// update seen message
+  Future<ApiResponse> updateToSeen({required String messageId}) async{
+    try{
+      /// req to server
+      Response _res = await dio.put(
+        '$url/updateToSeen',
+        data: {
+          'id': messageId
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': _user.sessionToken!
+          }
+        )
+      );
+      _apiResponse = ApiResponse.fromJson(_res.data);
+      /// validate response
+      if(_apiResponse.success == true){
+        return _apiResponse;
+      } else{
+        debugPrint(_apiResponse.message);
+        return _apiResponse;
+      }
+    } on DioError catch(err){
+      _apiResponse = ApiResponse.fromJson(err.response!.data);
+      debugPrint(_apiResponse.message);
+      return _apiResponse;
+    } finally{
+      notifyListeners();
+    }
+  }
+
+  /// update ro received message
+  Future<ApiResponse> updateToReceived({required String messageId}) async{
+    try{
+      /// req to server
+      Response _res = await dio.put(
+          '$url/updateToReceived',
+          data: {
+            'id': messageId
+          },
+          options: Options(
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': _user.sessionToken!
+              }
+          )
+      );
+      _apiResponse = ApiResponse.fromJson(_res.data);
+      /// validate response
+      if(_apiResponse.success == true){
+        return _apiResponse;
+      } else{
+        debugPrint(_apiResponse.message);
+        return _apiResponse;
+      }
+    } on DioError catch(err){
+      _apiResponse = ApiResponse.fromJson(err.response!.data);
+      debugPrint(_apiResponse.message);
+      return _apiResponse;
+    } finally{
+      notifyListeners();
+    }
   }
 
 }

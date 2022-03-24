@@ -1,17 +1,16 @@
-// To parse this JSON data, do
-//
-//     final message = messageFromJson(jsonString);
-
 import 'dart:convert';
+
+import 'package:video_player/video_player.dart';
 
 Message messageFromJson(String str) => Message.fromJson(json.decode(str));
 
 String messageToJson(Message data) => json.encode(data.toJson());
 
 class Message {
+
   String? id;
-  String? idReceiver;
   String? message;
+  String? idReceiver;
   String? idSender;
   String? idChat;
   String? status;
@@ -19,6 +18,7 @@ class Message {
   bool? isImage;
   bool? isVideo;
   int? timestamp;
+  VideoPlayerController? controller;
 
   Message({
     this.id,
@@ -31,6 +31,7 @@ class Message {
     this.isImage,
     this.isVideo,
     this.timestamp,
+    this.controller
   });
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
@@ -43,8 +44,19 @@ class Message {
     url: json["url"],
     isImage: json["is_image"],
     isVideo: json["is_video"],
-    timestamp: json["timestamp"],
+    timestamp: int.parse(json["timestamp"]),
   );
+
+  static List<Message> fromJsonList(List<dynamic> jsonList) {
+    List<Message> toList = [];
+
+    for (var item in jsonList) {
+      Message message = Message.fromJson(item);
+      toList.add(message);
+    }
+
+    return toList;
+  }
 
   Map<String, dynamic> toJson() => {
     "id": id,

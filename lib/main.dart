@@ -1,4 +1,6 @@
+import 'package:chat_app/src/core/extensions/life_cycle.dart';
 import 'package:chat_app/src/data/models/user.dart';
+import 'package:chat_app/src/data/repositories/env.dart';
 import 'package:chat_app/src/presentation/pages/home_page/home_page.dart';
 import 'package:chat_app/src/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:chat_app/src/presentation/providers/auth_provider.dart';
@@ -11,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +34,11 @@ void main() async {
 
   /// storage init
   await GetStorage.init();
-
+  Socket socket = io('${Environment.apiChat}chat', <String, dynamic> {
+    'transports': ['websocket'],
+    'autoConnect': false
+  });
+  socket.connect();
   /// initialize get storage
   runApp(MultiProvider(
     providers: [
@@ -53,6 +60,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -61,7 +69,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primaryColor: Colors.red),
         title: 'Chat App',
-        home: const MainPage(),
+        home: const LifeCycleManager(child: MainPage()),
       ),
     );
   }
@@ -75,6 +83,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthProvider>(context);

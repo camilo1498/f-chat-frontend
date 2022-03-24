@@ -73,6 +73,20 @@ class ProfilePage extends StatelessWidget {
                                               .toString()),
                                       placeholder: const AssetImage(
                                           'assets/images/user_placeholder.png'),
+                                      placeholderErrorBuilder: (_,__,___){
+                                        return const Image(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage(
+                                              'assets/images/user_placeholder.png'),
+                                        );
+                                      },
+                                      imageErrorBuilder: (_,__,___){
+                                        return const Image(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage(
+                                              'assets/images/user_placeholder.png'),
+                                        );
+                                      },
                                     ) : const Image(
                                       fit: BoxFit.cover,
                                       image: AssetImage(
@@ -103,8 +117,7 @@ class ProfilePage extends StatelessWidget {
                                                 shape: BoxShape.circle),
                                             child: Icon(
                                               Icons.image_outlined,
-                                              color:
-                                              HexColor.fromHex('#EFEEEE'),
+                                              color: HexColor.fromHex('#EFEEEE'),
                                             ),
                                           ),
                                         ),
@@ -167,6 +180,7 @@ class ProfilePage extends StatelessWidget {
                               ),
                             ),
                           ),
+                          Text('status: ${userProvider.user.isAvailable}'),
                           const Spacer()
                         ],
                       ),

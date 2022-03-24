@@ -53,8 +53,8 @@ class ContactsPage extends StatelessWidget {
                                       context: context,
                                       userChat: snapshot.data![index],
                                       name: '${snapshot.data?[index].name!} ${snapshot.data![index].lastname!}',
-                                      photoUrl: snapshot.data?[index].image!.toString() ?? '',
-                                      email: snapshot.data?[index].email! ?? ''
+                                      photoUrl: snapshot.data![index].image.toString(),
+                                      email: snapshot.data![index].email!
                                   );
                                 },
                               ),

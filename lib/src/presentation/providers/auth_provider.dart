@@ -87,7 +87,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       _loading = true;
       notifyListeners();
-      Response _res = await dio.post('$url/single-create',
+      Response _res = await dio.post('$url/simple-create',
           data: user.toJson(),
           options: Options(headers: {'Content-Type': 'application/json'}));
 
@@ -102,8 +102,10 @@ class AuthProvider extends ChangeNotifier {
       }
     } on DioError catch (err) {
       _status = AuthStatus.unauthenticated;
-      ApiResponse apiResponse = ApiResponse.fromJson(err.response!.data);
-      return apiResponse;
+      return ApiResponse(
+        success: false,
+        message: err.response!.data
+      );
     } finally {
       _loading = false;
       notifyListeners();

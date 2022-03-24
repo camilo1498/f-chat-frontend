@@ -111,7 +111,6 @@ class UserProvider extends ChangeNotifier {
       );
       //apiResponse = ApiResponse.fromJson(_res.data); => fix response structure in backend
       if(_res.statusCode == 201){
-
         /// create list<User>
         List<User> _users = User.fromJsonList(_res.data);
         return _users;
@@ -128,6 +127,20 @@ class UserProvider extends ChangeNotifier {
       notifyListeners();
     }
 
+  }
+
+  /// check is user is online
+  Future<Response> checkIfIsOnline({required String userId}) async{
+    Response response = await dio.get(
+      '$url/checkIfIsOnline/$userId',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': user.sessionToken!
+        }
+      )
+    );
+    return response;
   }
 
 }

@@ -1,6 +1,7 @@
 import 'package:chat_app/src/core/extensions/hex_color.dart';
 import 'package:chat_app/src/core/validations/textField_validator.dart';
 import 'package:chat_app/src/data/models/user.dart';
+import 'package:chat_app/src/data/repositories/env.dart';
 import 'package:chat_app/src/presentation/providers/auth_provider.dart';
 import 'package:chat_app/src/presentation/widgets/alert_sheets/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,7 @@ class SignUpController {
           lastname: lastnameController.text.trim(),
           phone: phoneController.text.trim(),
           email: emailController.text.trim(),
+          image: Environment.imageUrl,
           password: pwdController2.text.trim());
 
       await authProvider.register(user: _user).then((value) {

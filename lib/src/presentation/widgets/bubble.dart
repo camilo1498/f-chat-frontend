@@ -12,7 +12,7 @@ class Bubble extends StatelessWidget {
     final bg = isMe ? HexColor.fromHex('#EFEEEE') : HexColor.fromHex('#1C2938');
     final align = isMe ? CrossAxisAlignment.start : CrossAxisAlignment.end;
     final icon = status == 'ENVIADO' ? Icons.done : status == 'RECIBIDO' ? Icons.done_all : Icons.done_all;
-    final radius = isMe
+    final radius = !isMe
         ? const BorderRadius.only(
       topRight: Radius.circular(5.0),
       bottomLeft: Radius.circular(10.0),
@@ -27,7 +27,7 @@ class Bubble extends StatelessWidget {
       crossAxisAlignment: align,
       children: <Widget>[
         Container(
-          margin:  EdgeInsets.only(right: isMe == true ? 3 : 70, left: isMe == true ? 70 : 3, top: 5, bottom: 5),
+          margin:  EdgeInsets.only(right: isMe ? 3 : 70, left: isMe ? 70 : 3, top: 5, bottom: 5),
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             boxShadow: [
@@ -43,7 +43,12 @@ class Bubble extends StatelessWidget {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(right: isMe == true ? 60 : 57),
-                child:  Text(message),
+                child:  Text(
+                  message,
+                  style: TextStyle(
+                    color: isMe ? HexColor.fromHex('#1C2938') : HexColor.fromHex('#EFEEEE')
+                  ),
+                ),
               ),
               Positioned(
                 bottom: 0.0,
@@ -52,8 +57,8 @@ class Bubble extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       time,
-                      style: const TextStyle(
-                        color: Colors.black38,
+                      style: TextStyle(
+                        color: isMe ? HexColor.fromHex('#1C2938').withOpacity(0.6) : HexColor.fromHex('#EFEEEE').withOpacity(0.6),
                         fontSize: 10.0,
                       )
                     ),
