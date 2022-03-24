@@ -71,6 +71,8 @@ class ChatProvider extends ChangeNotifier{
 
     if(_res.statusCode == 201){
       List<Chat> chats = Chat.fromJsonList(_res.data);
+
+      print(' chats => ${chats.length}');
       return chats;
     } else{
       showToast(message: _res.data);

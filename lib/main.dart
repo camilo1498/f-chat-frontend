@@ -1,7 +1,9 @@
 import 'package:chat_app/src/core/extensions/life_cycle.dart';
 import 'package:chat_app/src/data/models/user.dart';
 import 'package:chat_app/src/data/repositories/env.dart';
+import 'package:chat_app/src/presentation/pages/chat_page/chat_controller.dart';
 import 'package:chat_app/src/presentation/pages/home_page/home_page.dart';
+import 'package:chat_app/src/presentation/pages/message_page/message_controller.dart';
 import 'package:chat_app/src/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:chat_app/src/presentation/providers/auth_provider.dart';
 import 'package:chat_app/src/presentation/providers/chat_provider.dart';
@@ -40,15 +42,17 @@ void main() async {
   });
   socket.connect();
   /// initialize get storage
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => AuthProvider()),
-      ChangeNotifierProvider(create: (_) => HomePageProvider()),
-      ChangeNotifierProvider(create: (_) => UserProvider()),
-      ChangeNotifierProvider(create: (_) => ChatProvider()),
-      ChangeNotifierProvider(create: (_) => MessageProvider())
-    ],
-    child: const MyApp(),
+  runApp(LifeCycleManager(
+    child: MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => HomePageProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
+        ChangeNotifierProvider(create: (_) => MessageProvider())
+      ],
+      child: const MyApp(),
+    ),
   ));
 }
 
@@ -69,7 +73,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primaryColor: Colors.red),
         title: 'Chat App',
-        home: const LifeCycleManager(child: MainPage()),
+        home: const MainPage(),
       ),
     );
   }
@@ -86,6 +90,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    ChatController(context: context);
     final _auth = Provider.of<AuthProvider>(context);
     switch (_auth.status) {
       case AuthStatus.uninitialized:

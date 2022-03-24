@@ -2,6 +2,7 @@ import 'package:chat_app/src/core/extensions/hex_color.dart';
 import 'package:chat_app/src/data/models/user.dart';
 import 'package:chat_app/src/presentation/pages/contacts_page/contacts_controller.dart';
 import 'package:chat_app/src/presentation/pages/message_page/message_page.dart';
+import 'package:chat_app/src/presentation/providers/message_provider.dart';
 import 'package:chat_app/src/presentation/providers/user_provider.dart';
 import 'package:chat_app/src/presentation/widgets/animations/animated_onTap_button.dart';
 import 'package:chat_app/src/presentation/widgets/animations/page_transition_animation.dart';
@@ -17,17 +18,20 @@ class ContactsPage extends StatelessWidget {
     final ContactsController _contactsController = ContactsController();
     /// mediaQuery
     final _size = MediaQueryData.fromWindow(WidgetsBinding.instance!.window);
-    return Consumer<UserProvider>(
-      builder: (_, userProvider, __){
+    return Consumer2<UserProvider, MessageProvider>(
+      builder: (_, userProvider, messageProvider, __){
         return Scaffold(
           backgroundColor: HexColor.fromHex('#EFEEEE'),
           appBar: AppBar(
             backgroundColor: HexColor.fromHex('#1C2938'),
             elevation: 2,
-            title: Text(
-              'User list',
-              style: TextStyle(
-                color: HexColor.fromHex('#EFEEEE'),
+            title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                'User list',
+                style: TextStyle(
+                  color: HexColor.fromHex('#EFEEEE'),
+                ),
               ),
             ),
           ),
@@ -131,7 +135,7 @@ class ContactsPage extends StatelessWidget {
                         width: 13,
                         height: 13,
                         decoration: BoxDecoration(
-                            color: Colors.red,
+                            color: userChat.online! ? Colors.green : Colors.red,
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white)
                         ),

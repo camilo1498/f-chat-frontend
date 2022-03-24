@@ -16,7 +16,7 @@ class User {
   String? image;
   String? isAvailable;
   String? notificationToken;
-
+  bool? online;
   User({
     this.id,
     this.email,
@@ -27,7 +27,8 @@ class User {
     this.sessionToken,
     this.image,
     this.isAvailable,
-    this.notificationToken
+    this.notificationToken,
+    this.online
   });
 
 
@@ -45,15 +46,16 @@ class User {
     image: json["image"],
     isAvailable: json["is_available"],
     notificationToken: json["notification_token"],
+    online: json["online"] ?? false,
   );
 
   static List<User> fromJsonList(List<dynamic> jsonList) {
     List<User> toList = [];
 
-    jsonList.forEach((item) {
+    for (var item in jsonList) {
       User user = User.fromJson(item);
       toList.add(user);
-    });
+    }
 
     return toList;
   }
@@ -69,6 +71,6 @@ class User {
     "image": image,
     "is_available": isAvailable,
     "notification_token": notificationToken,
-
+    "online": online
   };
 }

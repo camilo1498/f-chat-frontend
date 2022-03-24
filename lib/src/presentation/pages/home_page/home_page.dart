@@ -46,8 +46,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _pages({required HomePageProvider homeProvider}) {
-    return IndexedStack(
-      index: homeProvider.tapIndex,
+    return PageView(
+      controller: homeProvider.pageController,
+      physics: const NeverScrollableScrollPhysics(),
       children: const [ChatPage(), ContactsPage(), ProfilePage()],
     );
   }

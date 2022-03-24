@@ -21,8 +21,6 @@ class MessagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final MessageController _messageController = MessageController(context: context, userChat: userChat);
     final _size = MediaQueryData.fromWindow(WidgetsBinding.instance!.window);
-    //_messageController.createChat(userChat: userChat);
-   // _messageController.checkIfIsOnline();
     return Consumer2<MessageProvider, UserProvider>(
       builder: (_, messageProvider, userProvider,__){
         return Scaffold(
@@ -40,6 +38,7 @@ class MessagePage extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: ListView(
+                    reverse: true,
                     controller: _messageController.controller,
                     children: getMessages(messageProvider: messageProvider, userProvider: userProvider),
                   ),
@@ -133,87 +132,25 @@ class MessagePage extends StatelessWidget {
 
   /// custom message box
   Widget _messageBox({required BuildContext context, required MessageController messageController}){
-    return Container(
-      constraints: const BoxConstraints(
-        maxHeight: 180
-      ),
-      color: HexColor.fromHex('#EFEEEE'),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              flex: 7,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: HexColor.fromHex('#EFEEEE'),
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                        color: HexColor.fromHex('#1C2938'),
-                        blurRadius: 2,
-                        offset: const Offset(0, 1)
-                    )
-                  ]
-
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: AnimatedOnTapButton(
-                        onTap: (){},
-                        child: Icon(
-                          Icons.image,
-                          color: HexColor.fromHex('#1C2938'),
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 7,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: TextField(
-                          controller: messageController.messageTextController,
-                          focusNode: messageController.messageNode,
-                          maxLines: 200,
-                          minLines: 1,
-                          onChanged: (_){
-                            messageController.emitWriting();
-                          },
-                          style: TextStyle(
-                            color: HexColor.fromHex('#1C2938'),
-                            fontWeight: FontWeight.w400
-                          ),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Type a message',
-                          ),
-                        ),
-                      ),
-                    ),
-
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 10,),
-            Expanded(
-              flex: 1,
-              child: AnimatedOnTapButton(
-                onTap: (){
-                  messageController.sendMessage(userChat: userChat);
-                },
+    return SafeArea(
+      top: false,
+      child: Container(
+        constraints: const BoxConstraints(
+          maxHeight: 180
+        ),
+        color: HexColor.fromHex('#EFEEEE'),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                flex: 7,
                 child: Container(
-                  height: 70,
-                  width: 70,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                    color: HexColor.fromHex('#1C2938'),
-                    shape: BoxShape.circle,
+                    color: HexColor.fromHex('#EFEEEE'),
+                    borderRadius: BorderRadius.circular(25),
                     boxShadow: [
                       BoxShadow(
                           color: HexColor.fromHex('#1C2938'),
@@ -221,15 +158,80 @@ class MessagePage extends StatelessWidget {
                           offset: const Offset(0, 1)
                       )
                     ]
+
                   ),
-                  child: Icon(
-                    Icons.send,
-                    color: HexColor.fromHex('#EFEEEE'),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: AnimatedOnTapButton(
+                          onTap: (){},
+                          child: Icon(
+                            Icons.image,
+                            color: HexColor.fromHex('#1C2938'),
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 7,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: TextField(
+                            controller: messageController.messageTextController,
+                            focusNode: messageController.messageNode,
+                            maxLines: 200,
+                            minLines: 1,
+                            onChanged: (_){
+                              messageController.emitWriting();
+                            },
+                            style: TextStyle(
+                              color: HexColor.fromHex('#1C2938'),
+                              fontWeight: FontWeight.w400
+                            ),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Type a message',
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    ],
                   ),
                 ),
               ),
-            )
-          ],
+              const SizedBox(width: 10,),
+              Expanded(
+                flex: 1,
+                child: AnimatedOnTapButton(
+                  onTap: (){
+                    messageController.sendMessage(userChat: userChat);
+                  },
+                  child: Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                      color: HexColor.fromHex('#1C2938'),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                            color: HexColor.fromHex('#1C2938'),
+                            blurRadius: 2,
+                            offset: const Offset(0, 1)
+                        )
+                      ]
+                    ),
+                    child: Icon(
+                      Icons.send,
+                      color: HexColor.fromHex('#EFEEEE'),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -237,9 +239,6 @@ class MessagePage extends StatelessWidget {
 
   /// message list
   List<Widget>getMessages({required MessageProvider messageProvider, required UserProvider userProvider}){
-    messageProvider.message.sort((a, b){
-      return a.timestamp!.compareTo(b.timestamp!);
-    });
     return messageProvider.message.map((message) {
       return Container(
         margin:  const EdgeInsets.symmetric(horizontal: 20),

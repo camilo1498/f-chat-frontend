@@ -16,15 +16,13 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChatController _chatController = ChatController(context: context);
-    _chatController.getChats();
     return Consumer3<UserProvider, ChatProvider, MessageProvider>(
       builder: (_, userProvider, chatProvider, messageProvider, __){
         return Scaffold(
           appBar: AppBar(
             backgroundColor: HexColor.fromHex('#1C2938'),
             title: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
                 'Chat list',
                 style: TextStyle(
@@ -38,8 +36,17 @@ class ChatPage extends StatelessWidget {
           body: Stack(
             children: [
               SafeArea(
-                child: ListView(
-                  children: getChats(chatProvider: chatProvider, userProvider: userProvider),
+                child: FutureBuilder(
+                  future: chatProvider.getChats(),
+                  builder: (context, snapshot){
+                    if(snapshot.hasData){
+                      return ListView(
+                        children: getChats(chatProvider: chatProvider, userProvider: userProvider),
+                      );
+                    } else{
+                      return Container();
+                    }
+                  },
                 ),
               ),
               if (userProvider.loading)
