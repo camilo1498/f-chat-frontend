@@ -1,16 +1,36 @@
-# chat_app
+# Flutter chat app with Node js backend and socket.io
+This is a simple chat application only with six screens (login, register, chat list, users list, profile and message view.
 
-A new Flutter project.
+Here you can find the [backend server](https://github.com/camilo1498/f-chat-backend)
 
-## Getting Started
+## Dependencies used
+1) just_the_tooltip
 
-This project is a starting point for a Flutter application.
+2) provider
 
-A few resources to get you started if this is your first Flutter project:
+3) dio
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+4) get_storage
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+5) fluttertoast
+
+6) socket_io_client
+
+7) intl
+
+8) [gallery_media_picker](https://pub.dev/packages/gallery_media_picker)
+
+## Screenshots
+<p float="left"> 
+   <img src="https://github.com/camilo1498/f-chat-frontend/blob/main/app%20screenshots/1.jpg" width="200"/>
+   <img src="https://github.com/camilo1498/f-chat-frontend/blob/main/app%20screenshots/2.jpg" width="200"/>
+   <img src="https://github.com/camilo1498/f-chat-frontend/blob/main/app%20screenshots/3.jpg" width="200"/>
+   <img src="https://github.com/camilo1498/f-chat-frontend/blob/main/app%20screenshots/4.jpg" width="200"/>
+</p>
+
+## Gif
+<p float="left"> 
+   <img src="https://github.com/camilo1498/f-chat-frontend/blob/main/app%20screenshots/gif-1.gif" width="200"/>
+   <img src="https://github.com/camilo1498/f-chat-frontend/blob/main/app%20screenshots/gif-2.gif" width="200"/>
+   <img src="https://github.com/camilo1498/f-chat-frontend/blob/main/app%20screenshots/gif-3.gif" width="200"/>
+</p>
